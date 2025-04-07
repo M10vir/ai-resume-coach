@@ -15,9 +15,13 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   }
 }
 
+resource blobService 'Microsoft.Storage/storageAccounts/blobServices@2022-09-01' = {
+  name: '${storageAccount.name}/default'
+  properties: {}
+}
+
 resource blobContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2022-09-01' = {
-  name: 'resumes'
-  parent: storageAccount::default
+  name: '${storageAccount.name}/default/resumes'
   properties: {
     publicAccess: 'None'
   }
