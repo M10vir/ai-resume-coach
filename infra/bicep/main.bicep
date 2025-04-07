@@ -48,6 +48,6 @@ module videoIndexer 'video-indexer.bicep' = {
   scope: rg
   params: {
     location: location
-    storageAccountName: storage.storageAccountName
+    storageAccountName: storage.outputs.storageAccountName
   }
 }
