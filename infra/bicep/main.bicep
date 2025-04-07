@@ -42,3 +42,12 @@ module cognitiveSearch 'cognitive-search.bicep' = {
     location: location
   }
 }
+
+module videoIndexer 'video-indexer.bicep' = {
+  name: 'videoIndexerModule'
+  scope: rg
+  params: {
+    location: location
+    storageAccountName: storage.storageAccountName
+  }
+}

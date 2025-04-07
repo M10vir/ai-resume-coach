@@ -1,5 +1,6 @@
 param location string
 param storageAccountName string = 'coachsa${uniqueString(resourceGroup().id)}'
+output storageAccountName string = storageAccount.name
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   name: storageAccountName
