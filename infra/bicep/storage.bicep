@@ -1,5 +1,5 @@
 param location string
-param storageAccountName string = 'aicoachstorage'
+param storageAccountName string = 'aicoachstorage${uniqueString(resourceGroup().id)}'
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
   name: storageAccountName
@@ -16,7 +16,8 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2022-09-01' = {
 }
 
 resource blobContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2022-09-01' = {
-  name: '${storageAccount.name}/default/resumes'
+  name: 'resumes'
+  parent: storageAccount::default
   properties: {
     publicAccess: 'None'
   }
