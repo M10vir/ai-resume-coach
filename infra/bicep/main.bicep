@@ -34,3 +34,11 @@ module storage 'storage.bicep' = {
     location: location
   }
 }
+
+module cognitiveSearch 'cognitive-search.bicep' = {
+  name: 'cognitiveSearchModule'
+  scope: rg
+  params: {
+    location: location
+  }
+}
