@@ -26,3 +26,11 @@ module postgres 'postgres.bicep' = {
     adminPassword: adminPassword  // Replace this with a secure one
   }
 }
+
+module storage 'storage.bicep' = {
+  name: 'storageModule'
+  scope: rg
+  params: {
+    location: location
+  }
+}
