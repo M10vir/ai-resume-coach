@@ -1,0 +1,10 @@
+{
+  "name": "resumes-index",
+  "fields": [
+    { "name": "id", "type": "Edm.String", "key": true, "filterable": true, "sortable": true },
+    { "name": "name", "type": "Edm.String", "searchable": true },
+    { "name": "skills", "type": "Collection(Edm.String)", "searchable": true, "filterable": true, "facetable": true },
+    { "name": "text", "type": "Edm.String", "searchable": true, "analyzer": "en.lucene" },
+    { "name": "summary", "type": "Edm.String", "searchable": true }
+  ]
+}

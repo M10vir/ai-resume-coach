@@ -1,11 +1,12 @@
 from fastapi import FastAPI
-from app.routes import analyze
+from app.routes import analyze, search
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="AI Resume & Interview Coach API")
 
 # Register the router
 app.include_router(analyze.router)
+app.include_router(search.router)
 
 # Allow frontend to call backend
 origins = [
