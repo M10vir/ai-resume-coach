@@ -1,6 +1,6 @@
 # backend/app/services/rag_engine.py
 
-import os import ChatCompletion
+from openai import ChatCompletion
 from dotenv import load_dotenv
 from app.services.search_client import search_documents
 
