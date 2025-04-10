@@ -1,0 +1,20 @@
+{
+  "value": [
+    {
+      "@search.action": "upload",
+      "id": "resume-001",
+      "name": "Alice Johnson",
+      "skills": ["Python", "FastAPI", "Azure"],
+      "text": "Experienced Python backend developer with strong knowledge of FastAPI and Azure Cloud services.",
+      "summary": "Python + Azure backend engineer"
+    },
+    {
+      "@search.action": "upload",
+      "id": "resume-002",
+      "name": "Bob Smith",
+      "skills": ["JavaScript", "React", "Node.js"],
+      "text": "Full-stack developer specializing in React frontend and Node.js backend.",
+      "summary": "Full-stack JS developer"
+    }
+  ]
+}
