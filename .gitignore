@@ -32,3 +32,6 @@ build/
 
 # VS Code
 .vscode/
+
+# Ignore uploaded resumes
+backend/uploads/
