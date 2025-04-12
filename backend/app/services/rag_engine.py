@@ -1,54 +1,41 @@
-# backend/app/services/rag_engine.py
-
-from openai import ChatCompletion
+import os
 from dotenv import load_dotenv
+from openai import AzureOpenAI
 from app.services.search_client import search_documents
 
-# If GPT-4 is ready, uncomment this block
-# import openai
-# load_dotenv()
-# openai.api_key = os.getenv("AZURE_OPENAI_KEY")
-# openai.api_base = os.getenv("AZURE_OPENAI_ENDPOINT")
-# openai.api_type = "azure"
-# openai.api_version = os.getenv("AZURE_OPENAI_API_VERSION")
-# DEPLOYMENT_NAME = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME")
+load_dotenv()
 
-def generate_rag_answer(query: str, mock: bool = True) -> dict:
+client = AzureOpenAI(
+    api_key=os.getenv("AZURE_OPENAI_KEY"),
+    api_version=os.getenv("AZURE_OPENAI_API_VERSION"),
+    azure_endpoint=os.getenv("AZURE_OPENAI_ENDPOINT")
+)
+
+DEPLOYMENT_NAME = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME")
+
+def generate_rag_answer(query: str) -> dict:
     docs = search_documents(query)
-    context = "\n".join([doc.get("text", "") for doc in docs])
 
-    if not docs:
-        return {
-            "query": query,
-            "documents": [],
-            "answer": "🛑 No matching documents found in the search index."
-        }
+    # ✅ Truncate each document's text to avoid token overflow (1000 chars max)
+    context = "\n".join([doc["text"][:1000] for doc in docs])
 
-    if mock:
-        # Return mock GPT-style RAG answer
-        answer = f"""🧠 GPT-style RAG Answer (Mocked):
-
-Your query: **{query}**
-
-We found {len(docs)} matching documents. Based on them, here's a helpful insight:
-
-\"\"\"{context}\"\"\"
-
-(Note: This will be enhanced with GPT-4 once access is granted.)
-"""
-    else:
-        # Uncomment this section when GPT-4 is ready
-        # response = openai.ChatCompletion.create(
-        #     engine=DEPLOYMENT_NAME,
-        #     messages=[
-        #         {"role": "system", "content": "You are a helpful AI Resume & Interview Coach."},
-        #         {"role": "user", "content": f"Based on the following documents:\n\n{context}\n\nAnswer this question: {query}"}
-        #     ],
-        #     temperature=0.7,
-        #     max_tokens=600
-        # )
-        # answer = response.choices[0].message["content"]
-        answer = "⚠️ GPT-4 integration placeholder. Uncomment code when access is approved."
+    try:
+        response = client.chat.completions.create(
+            model=DEPLOYMENT_NAME,
+            messages=[
+                {
+                    "role": "system",
+                    "content": "You're an AI Resume Coach. Use the context below to answer the question."
+                },
+                {
+                    "role": "user",
+                    "content": f"Context:\n{context}\n\nQuestion: {query}"
+                }
+            ]
+        )
+        answer = response.choices[0].message.content
+    except Exception as e:
+        answer = f"❌ Error calling GPT-4o:\n\n{str(e)}"
 
     return {
         "query": query,
