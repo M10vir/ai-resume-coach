@@ -1,14 +1,14 @@
-from fastapi import APIRouter, UploadFile, File, HTTPException
+# backend/app/routes/upload.py
+
+from fastapi import APIRouter, UploadFile, File, HTTPException, Depends
+from sqlalchemy.orm import Session
 import os
 from uuid import uuid4
-
+from app.database import get_db
+from app.models import Resume
 from app.services.resume_extractor import extract_text_from_resume
 from app.services.search_client import upload_document_to_search
-from app.services.rag_engine import analyze_resume_with_gpt
-
-from app.models import Resume
-from app.database import get_db
-from sqlalchemy.orm import Session
+from app.services.rag_engine import generate_gpt_feedback  # new helper
 
 router = APIRouter()
 
@@ -16,7 +16,7 @@ UPLOAD_DIR = "uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
 @router.post("/upload-resume")
-async def upload_resume(file: UploadFile = File(...)):
+async def upload_resume(file: UploadFile = File(...), db: Session = Depends(get_db)):
     if file.content_type not in [
         "application/pdf",
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
@@ -27,38 +27,38 @@ async def upload_resume(file: UploadFile = File(...)):
     file_ext = file.filename.split('.')[-1]
     file_path = os.path.join(UPLOAD_DIR, f"{resume_id}.{file_ext}")
 
-    # Save file
+    # Save file locally
     with open(file_path, "wb") as f:
         f.write(await file.read())
 
-    # Extract text
-    extracted_text = extract_text_from_resume(file_path)
-    if not extracted_text.strip():
+    # Extract text from resume
+    text = extract_text_from_resume(file_path)
+    if not text.strip():
         raise HTTPException(status_code=422, detail="Failed to extract text from resume")
 
-    # 🔍 Upload to Azure Search
+    # Upload to Azure Cognitive Search
     upload_document_to_search({
         "id": resume_id,
         "name": file.filename,
         "summary": "Uploaded resume",
         "skills": [],
-        "text": extracted_text
+        "text": text
     })
 
-    # 🧠 Get GPT-4 feedback
-    ai_feedback = analyze_resume_with_gpt(extracted_text)
+    # Generate GPT-4o feedback
+    ai_feedback = generate_gpt_feedback(text)
 
-    # 💾 Save to PostgreSQL
-    db: Session = next(get_db())
-    db_resume = Resume(
+    # Save to PostgreSQL
+    resume = Resume(
         id=resume_id,
         filename=file.filename,
         file_path=file_path,
-        extracted_text=extracted_text,
+        extracted_text=text,
         ai_feedback=ai_feedback
     )
-    db.add(db_resume)
+    db.add(resume)
     db.commit()
+    db.refresh(resume)
 
     return {
         "message": "Resume uploaded, analyzed, and indexed",
