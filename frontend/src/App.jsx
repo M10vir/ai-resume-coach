@@ -1,17 +1,18 @@
+// frontend/src/App.jsx
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import RAGSearch from './pages/RAGSearch';
-import ResumeManager from './pages/ResumeManager'; // ✅ NEW IMPORT
+import ResumeManager from './pages/ResumeManager'; // ✅ Add this line
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/rag-search" element={<RAGSearch />} />
-        <Route path="/resume-manager" element={<ResumeManager />} /> {/* ✅ NEW ROUTE */}
+        <Route path="/resumes" element={<ResumeManager />} />  {/* ✅ This line must exist */}
         <Route path="/" element={
           <>
             <h1>🏠 Welcome to AI Resume Coach</h1>
-            <p>Use the <a href="/rag-search">/rag-search</a> or <a href="/resume-manager">/resume-manager</a> routes.</p> {/* ✅ Updated text */}
+            <p>Use the <a href="/rag-search">RAG Search</a> or <a href="/resumes">Resume Manager</a> to explore.</p>
           </>
         } />
       </Routes>
