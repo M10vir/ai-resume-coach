@@ -5,6 +5,7 @@ import time
 from dotenv import load_dotenv
 from openai import AzureOpenAI
 from app.services.search_client import search_documents
+from datetime import datetime
 
 load_dotenv()
 
@@ -16,9 +17,21 @@ client = AzureOpenAI(
 
 DEPLOYMENT_NAME = os.getenv("AZURE_OPENAI_DEPLOYMENT_NAME")
 
+# 📁 Create logs directory
+os.makedirs("logs", exist_ok=True)
 
-def safe_gpt_call(system_prompt: str, user_prompt: str) -> str:
-    """Helper to safely call GPT with retry on rate limits."""
+def log_gpt_call(prompt_type: str, user_prompt: str, response: str = "", error: str = ""):
+    with open("logs/gpt_api.log", "a") as log_file:
+        log_file.write(f"\n==== {prompt_type} | {datetime.utcnow()} ====\n")
+        log_file.write(f"🧠 Prompt:\n{user_prompt}\n")
+        if response:
+            log_file.write(f"\n✅ Response:\n{response}\n")
+        if error:
+            log_file.write(f"\n❌ Error:\n{error}\n")
+
+
+def safe_gpt_call(system_prompt: str, user_prompt: str, prompt_type: str = "general") -> str:
+    """Helper to safely call GPT with retry on rate limits and log the interaction."""
     try:
         print("[AI] Calling GPT-4o...")
         response = client.chat.completions.create(
@@ -28,7 +41,9 @@ def safe_gpt_call(system_prompt: str, user_prompt: str) -> str:
                 {"role": "user", "content": user_prompt}
             ]
         )
-        return response.choices[0].message.content
+        message = response.choices[0].message.content
+        log_gpt_call(prompt_type, user_prompt, response=message)
+        return message
     except Exception as e:
         error_msg = str(e)
         if "429" in error_msg:
@@ -42,23 +57,24 @@ def safe_gpt_call(system_prompt: str, user_prompt: str) -> str:
                         {"role": "user", "content": user_prompt}
                     ]
                 )
-                return response.choices[0].message.content
+                message = response.choices[0].message.content
+                log_gpt_call(prompt_type, user_prompt, response=message)
+                return message
             except Exception as retry_e:
+                log_gpt_call(prompt_type, user_prompt, error=str(retry_e))
                 return f"(GPT-4 feedback unavailable due to error: {retry_e})"
+        log_gpt_call(prompt_type, user_prompt, error=error_msg)
         return f"(GPT-4 feedback unavailable due to error: {error_msg})"
 
 
 # 🔍 Used by RAG Search
 def generate_rag_answer(query: str) -> dict:
     docs = search_documents(query)
-
-    # ✅ Truncate each document's text to avoid token overflow
     context = "\n".join([doc["text"][:1000] for doc in docs])
-
     prompt = f"Context:\n{context}\n\nQuestion: {query}"
     system_prompt = "You're an AI Resume Coach. Use the context below to answer the question."
 
-    answer = safe_gpt_call(system_prompt, prompt)
+    answer = safe_gpt_call(system_prompt, prompt, prompt_type="rag-search")
 
     return {
         "query": query,
@@ -71,10 +87,9 @@ def generate_rag_answer(query: str) -> dict:
 def generate_gpt_feedback(resume_text: str) -> str:
     prompt = f"Resume:\n{resume_text[:4000]}"
     system_prompt = "You're a professional resume coach. Provide constructive feedback to improve the resume text."
-    return safe_gpt_call(system_prompt, prompt)
+    return safe_gpt_call(system_prompt, prompt, prompt_type="resume-feedback")
 
 
-# ✨ Optional: More in-depth GPT resume analysis
 def analyze_resume_with_gpt(resume_text: str) -> str:
     prompt = f"""
 You are a senior resume reviewer and career coach. Carefully read the resume content below and provide a helpful analysis including:
@@ -90,4 +105,4 @@ Resume Content:
 \"\"\"
 """
     system_prompt = "You're a helpful assistant providing professional resume feedback."
-    return safe_gpt_call(system_prompt, prompt)
+    return safe_gpt_call(system_prompt, prompt, prompt_type="detailed-analysis")
