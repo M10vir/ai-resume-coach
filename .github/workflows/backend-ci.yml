@@ -29,6 +29,9 @@ jobs:
       - name: 📥 Checkout code
         uses: actions/checkout@v3
 
+      - name: 🪵 List test directory contents
+        run: ls -la backend/tests
+
       - name: 🐍 Set up Python 3.11
         uses: actions/setup-python@v4
         with:
