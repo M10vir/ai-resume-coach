@@ -1,8 +1,9 @@
 from fastapi import FastAPI
-from app.routes import analyze, search, rag, upload, resumes
+from app.routes import analyze, search, rag, upload, resumes, video_test
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(title="AI Resume & Interview Coach API")
+app.include_router(video_test.router)
 
 # Register the router
 app.include_router(analyze.router)

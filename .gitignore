@@ -35,3 +35,6 @@ build/
 
 # Ignore uploaded resumes
 backend/uploads/
+
+# Ignore mp4 clips
+*.mp4
