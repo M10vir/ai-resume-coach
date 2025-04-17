@@ -7,7 +7,7 @@ import os
 client = TestClient(app)
 
 def test_transcribe_audio_route():
-    test_audio_path = "backend/tests/test_audio.wav"
+    test_audio_path = "tests/test_audio.wav"
     assert os.path.exists(test_audio_path), "❌ Test audio file not found!"
 
     with open(test_audio_path, "rb") as audio_file:
