@@ -31,8 +31,8 @@ jobs:
         with:
           lfs: true
 
-      - name: 🪵 List test directory contents
-        run: ls -la backend/tests
+#      - name: 🪵 List test directory contents
+#        run: ls -la backend/tests
 
       - name: 🐍 Set up Python 3.11
         uses: actions/setup-python@v4
