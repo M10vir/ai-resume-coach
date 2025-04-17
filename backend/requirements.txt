@@ -1,21 +1,34 @@
+# ⚡ Core FastAPI stack
 fastapi
 uvicorn[standard]
 pydantic
 python-dotenv
-openai
-langchain
-faiss-cpu
-pdfminer.six
-python-docx
-psycopg2-binary
-sqlalchemy
-httpx
-requests
 python-multipart
 aiofiles
-tqdm
+requests
+httpx
+
+# 🧠 AI & LLMs
+openai
+langchain
 whisper
-azure-cognitiveservices-vision-computervision
+tqdm
+
+# 🗂️ Vector Search
+faiss-cpu
+
+# 📄 Document parsing
+pdfminer.six
+python-docx
+
+# 🐘 PostgreSQL
+psycopg2-binary
+sqlalchemy
+
+# ☁️ Azure SDKs
 azure-identity
 azure-storage-blob
+azure-cognitiveservices-vision-computervision
+
+# 🧪 Testing
 pytest>=7.0.0
