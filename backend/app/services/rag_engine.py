@@ -106,3 +106,22 @@ Resume Content:
 """
     system_prompt = "You're a helpful assistant providing professional resume feedback."
     return safe_gpt_call(system_prompt, prompt, prompt_type="detailed-analysis")
+
+# 🧠 Create Helper: analyze_transcript_with_gpt()
+
+def analyze_transcript_with_gpt(transcript: str) -> str:
+    prompt = f"""
+You're an expert communication coach. Analyze the following transcript from a mock interview or speech and provide feedback on:
+
+- Clarity and coherence of speech
+- Use of filler words or repetition
+- Professional tone and delivery
+- Suggestions for improvement
+
+Transcript:
+\"\"\"
+{transcript[:3500]}
+\"\"\"
+"""
+    system_prompt = "You're a communication coach giving constructive feedback."
+    return safe_gpt_call(system_prompt, prompt)

@@ -2,6 +2,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import RAGSearch from './pages/RAGSearch';
 import ResumeManager from './pages/ResumeManager'; // ✅ Add this line
+import TranscriptionPage from "./pages/TranscriptionPage";
 
 function App() {
   return (
@@ -9,6 +10,7 @@ function App() {
       <Routes>
         <Route path="/rag-search" element={<RAGSearch />} />
         <Route path="/resumes" element={<ResumeManager />} />  {/* ✅ This line must exist */}
+        <Route path="/transcribe" element={<TranscriptionPage />} />
         <Route path="/" element={
           <>
             <h1>🏠 Welcome to AI Resume Coach</h1>
