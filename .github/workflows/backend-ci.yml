@@ -42,4 +42,4 @@ jobs:
 
       - name: 🧪 Run Pytest Unit Tests
         run: |
-          PYTHONPATH=backend pytest tests/
+          PYTHONPATH=, pytest tests/
