@@ -11,7 +11,7 @@ httpx
 # 🧠 AI & LLMs
 openai
 langchain
-whisper
+openai-whisper
 tqdm
 
 # 🗂️ Vector Search
