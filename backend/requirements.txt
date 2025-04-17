@@ -15,7 +15,7 @@ python-multipart
 aiofiles
 tqdm
 whisper
-textract
 azure-cognitiveservices-vision-computervision
 azure-identity
 azure-storage-blob
+pytest>=7.0.0
