@@ -38,7 +38,7 @@ backend/uploads/
 
 # Ignore media clips
 *.mp4
-*.wav
+#*.wav
 *.mp3
 
 # Ignore Video 401/USER_NOT_REGISTERED errors
