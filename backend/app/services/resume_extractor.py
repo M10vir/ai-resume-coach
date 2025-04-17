@@ -1,4 +1,4 @@
-import textract
+#import textract
 
 def extract_text_from_resume(file_path: str) -> str:
     try:
