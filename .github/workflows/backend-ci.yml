@@ -35,6 +35,12 @@ jobs:
           python-version: '3.11'
           cache: 'pip'
 
+      - name: ♻️ Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: deps-${{ runner.os }}-${{ hashFiles('**/requirements.txt') }}
+
       - name: 📦 Install dependencies
         run: |
           pip install -r requirements.txt
