@@ -31,3 +31,7 @@ jobs:
       - name: ✅ Test FastAPI app (health check)
         run: |
           python -c "import requests; print('App ready to test 🚀')"
+
+      - name: 🧪 Run Pytest Unit Tests
+        run: |
+          PYTHONPATH=backend pytest tests/
