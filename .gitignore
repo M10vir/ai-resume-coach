@@ -36,5 +36,10 @@ build/
 # Ignore uploaded resumes
 backend/uploads/
 
-# Ignore mp4 clips
+# Ignore media clips
 *.mp4
+*.mav
+*.mp3
+
+# Ignore Video 401/USER_NOT_REGISTERED errors
+*video*.py
