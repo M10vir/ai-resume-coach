@@ -1,6 +1,12 @@
 
 ## AI-Powered Resume & Interview Coach
 
+# AI Resume & Interview Coach
+
+![CI](https://github.com/M10vir/ai-resume-coach/actions/workflows/backend-ci.yml/badge.svg)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/M10vir/ai-resume-coach)
+![GitHub](https://img.shields.io/github/license/M10vir/ai-resume-coach)
+
 This project is a full-stack AI application that leverages Azure OpenAI, Whisper, FastAPI, PostgreSQL, and Cognitive Search to analyze resumes, transcribe and evaluate interview audio/video, and provide intelligent feedback using LLM and RAG techniques.
 
 # Table of Contents
