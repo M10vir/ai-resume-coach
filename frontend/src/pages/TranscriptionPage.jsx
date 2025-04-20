@@ -7,6 +7,7 @@ const TranscriptionPage = () => {
   const [file, setFile] = useState(null);
   const [transcript, setTranscript] = useState("");
   const [gptFeedback, setGptFeedback] = useState("");
+  const [emotion, setEmotion] = useState(""); // 🆕 Emotion State
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -14,6 +15,7 @@ const TranscriptionPage = () => {
     setFile(e.target.files[0]);
     setTranscript("");
     setGptFeedback("");
+    setEmotion(""); // 🆕 Reset emotion
     setError("");
   };
 
@@ -34,6 +36,7 @@ const TranscriptionPage = () => {
 
       setTranscript(response.data.transcript);
       setGptFeedback(response.data.gpt_feedback);
+      setEmotion(response.data.emotion || "Not detected"); // 🆕 Set emotion
     } catch (err) {
       console.error(err);
       setError("❌ Upload or transcription failed. Please try again.");
@@ -77,6 +80,14 @@ const TranscriptionPage = () => {
           <pre style={{ backgroundColor: "#1e1e1e", padding: "1rem", borderRadius: "5px" }}>
             {gptFeedback}
           </pre>
+        </>
+      )}
+
+      {/* Emotion Detection */}
+      {emotion && (
+        <>
+          <h3 style={{ marginTop: "2rem" }}>🎭 Detected Emotion</h3>
+          <p style={{ fontSize: "1.1rem" }}>{emotion}</p>
         </>
       )}
     </div>

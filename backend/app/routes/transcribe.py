@@ -3,6 +3,7 @@
 from fastapi import UploadFile, File, APIRouter, HTTPException
 from app.services.whisper_transcriber import transcribe_audio
 from app.services.rag_engine import analyze_transcript_with_gpt
+from app.services.emotion_detector import detect_emotion
 
 router = APIRouter()
 
@@ -30,7 +31,11 @@ async def transcribe_audio_route(file: UploadFile = File(...)):
     # 💬 Analyze with GPT-4
     gpt_feedback = analyze_transcript_with_gpt(transcript)
 
+    # 🧠 Call Emotion detectioni
+    emotion = detect_emotion("temp_audio.wav")
+    
     return {
         "transcript": transcript,
-        "gpt_feedback": gpt_feedback
+        "gpt_feedback": gpt_feedback,
+        "emotion": emotion
     }
