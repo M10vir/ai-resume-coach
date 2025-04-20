@@ -43,3 +43,6 @@ backend/uploads/
 
 # Ignore Video 401/USER_NOT_REGISTERED errors
 *video*.py
+
+# Ignore ORIG 
+*.orig
