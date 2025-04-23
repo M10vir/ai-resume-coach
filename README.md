@@ -2,6 +2,18 @@
 ## AI-Powered Resume & Interview Coach
 
 # AI Resume & Interview Coach
+### Built With
+
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![Azure OpenAI](https://img.shields.io/badge/Azure%20OpenAI-0078D4?style=for-the-badge&logo=microsoftazure&logoColor=white)
+![Azure Cognitive Search](https://img.shields.io/badge/Cognitive%20Search-0078D4?style=for-the-badge&logo=microsoft&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?style=for-the-badge&logo=postgresql&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)
+![Whisper](https://img.shields.io/badge/Whisper-AI%20Transcription-4B8BBE?style=for-the-badge)
+![pyannote.audio](https://img.shields.io/badge/pyannote.audio-Emotion%20Detection-8A2BE2?style=for-the-badge)
 
 ![Backend CI](https://github.com/M10vir/ai-resume-coach/actions/workflows/backend-ci.yml/badge.svg)
 ![Release](https://img.shields.io/github/v/release/M10vir/ai-resume-coach)
